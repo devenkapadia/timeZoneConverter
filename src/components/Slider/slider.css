@@ -1,0 +1,51 @@
+/* Slider container */
+.slider-container {
+    position: relative;
+  }
+  
+  /* Slider input */
+  .slider-container input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    margin-right: 10px;
+  }
+  
+  .slider-container input[type="range"]:focus {
+    outline: none;
+  }
+  
+  /* Slider track */
+  .slider-container input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 20px;
+    background: #ddd;
+    border-radius: 5px;
+  }
+  
+  /* Slider thumb */
+  .slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    border-radius: 30%;
+    cursor: pointer;
+    position: relative;
+    z-index: 1; /* Ensure thumb appears above labels */
+  }
+  
+  /* Slider labels container */
+  .slider-container .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    bottom: -30px; /* Adjust as needed */
+    width: 100%;
+    color: #666; /* Adjust label color */
+  }
+  
+  /* Slider label */
+  .slider-container .slider-labels span {
+    font-size: 12px;
+  }
+  
