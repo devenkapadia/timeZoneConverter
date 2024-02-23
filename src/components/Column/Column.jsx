@@ -4,11 +4,14 @@ import {
 } from "@dnd-kit/sortable";
 
 import { Task } from "../Task/Task";
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 import "./Column.css";
+import { useEffect } from "react";
 
 export const Column = ({ tasks, removeTask, handleSliderChange }) => {
-
+  useEffect(() => {
+    // console.log("TASKS ARE CHANGING --------- ", tasks);
+  }, [tasks]);
   return (
     <div className="column">
       <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
@@ -19,7 +22,9 @@ export const Column = ({ tasks, removeTask, handleSliderChange }) => {
             title={task.title}
             time={task.time}
             onRemove={removeTask}
-            onSliderChange={(newValue) => handleSliderChange(task.title, newValue)} // Pass the callback function to Task
+            onSliderChange={(newValue) =>
+              handleSliderChange(task.title, newValue)
+            } // Pass the callback function to Task
           />
         ))}
       </SortableContext>

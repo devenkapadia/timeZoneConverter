@@ -8,7 +8,7 @@ import {
   closestCorners,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 
 import { Column } from "./components/Column/Column";
 import { Input } from "./components/Input/Input";
@@ -20,21 +20,21 @@ export default function App() {
     {
       id: 1,
       title: "IST",
-      time: "10:00"
+      time: "10:00",
     },
     {
       id: 2,
       title: "UTC",
-      time: "20:00"
+      time: "20:00",
     },
   ]);
 
   const [isLoading, setIsLoading] = useState(true);
 
   function appendTime() {
-    const updatedData = tasks.map(entry => {
+    const updatedData = tasks.map((entry) => {
       const currentTime = DateTime.now().setZone(entry.title);
-      return { ...entry, time: currentTime.toFormat('HH:mm') };
+      return { ...entry, time: currentTime.toFormat("HH:mm") };
     });
     setTasks(updatedData);
     setIsLoading(false); // Set loading state to false after appending time
@@ -44,14 +44,16 @@ export default function App() {
     appendTime();
   }, []);
 
-
   const addTask = (title, time) => {
     const isDuplicate = tasks.some((task) => task.title === title);
 
     if (isDuplicate) {
       return;
     }
-    setTasks((tasks) => [...tasks, { id: tasks.length + 1, title: title, time: time }]);
+    setTasks((tasks) => [
+      ...tasks,
+      { id: tasks.length + 1, title: title, time: time },
+    ]);
   };
 
   const removeTask = (taskIdToRemove) => {
@@ -62,21 +64,23 @@ export default function App() {
   };
 
   const handleSliderChange = (taskTitle, newValue) => {
-    setIsLoading(true)
-    const newTime = DateTime.fromFormat(newValue.toString(), 'HH:mm');
+    // console.log(")))))))))))))))", taskTitle, newValue);
+    setIsLoading(true);
+    const newTime = DateTime.fromFormat(newValue.toString(), "HH:mm");
 
-    const updatedTasks = tasks.map(task => {
+    const updatedTasks = tasks.map((task) => {
       if (task.title === taskTitle) {
-        return { ...task, time: newTime.toFormat('HH:mm') };
+        return { ...task, time: newTime.toFormat("HH:mm") };
       }
 
       const updatedTime = newTime.setZone(task.title);
+      // console.log("TITLE", task.title);
 
-      return { ...task, time: updatedTime.toFormat('HH:mm') };
+      return { ...task, time: updatedTime.toFormat("HH:mm") };
     });
+    // console.log("UPDATED TASK ------------ ", updatedTasks);
     setTasks(updatedTasks);
-    console.log(tasks);
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const sensors = useSensors(
@@ -105,13 +109,20 @@ export default function App() {
     <div className="App">
       <h1>Time Zones ✅</h1>
       <Input onSubmit={addTask} />
-      {!isLoading && (<DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragEnd={handleDragEnd}
-      >
-        <Column id="toDo" tasks={tasks} removeTask={removeTask} handleSliderChange={handleSliderChange} />
-      </DndContext>)}
+      {!isLoading && (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragEnd={handleDragEnd}
+        >
+          <Column
+            id="toDo"
+            tasks={tasks}
+            removeTask={removeTask}
+            handleSliderChange={handleSliderChange}
+          />
+        </DndContext>
+      )}
     </div>
   );
 }
