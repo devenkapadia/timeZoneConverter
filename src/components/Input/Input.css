@@ -20,4 +20,6 @@
   width: 300px;
   border: solid 2px grey;
   border-radius: 6px;
+  height: 40px;
+  padding: 0 0.6rem;
 }

@@ -16,33 +16,34 @@ import { Input } from "./components/Input/Input";
 import "./App.css";
 
 export default function App() {
+
+  function roundTimeToQuarters(timeStr) {
+    let [hours, minutes] = timeStr.split(':').map(Number);
+
+    if (minutes < 8) {
+      minutes = 0;
+    } else if (minutes < 23) {
+      minutes = 15;
+    } else if (minutes < 38) {
+      minutes = 30;
+    } else if (minutes < 53) {
+      minutes = 45;
+    } else {
+      minutes = 0;
+      hours += 1;
+    }
+
+    return hours + minutes / 60;
+  }
   const [tasks, setTasks] = useState([
     {
       id: 1,
-      title: "IST",
-      time: "10:00",
-    },
-    {
-      id: 2,
       title: "UTC",
-      time: "20:00",
+      time: roundTimeToQuarters(DateTime.now().setZone('UTC').toFormat("HH:mm")),
     },
   ]);
 
-  const [isLoading, setIsLoading] = useState(true);
-
-  function appendTime() {
-    const updatedData = tasks.map((entry) => {
-      const currentTime = DateTime.now().setZone(entry.title);
-      return { ...entry, time: currentTime.toFormat("HH:mm") };
-    });
-    setTasks(updatedData);
-    setIsLoading(false); // Set loading state to false after appending time
-  }
-
-  useEffect(() => {
-    appendTime();
-  }, []);
+  const [isLoading, setIsLoading] = useState(false)
 
   const addTask = (title, time) => {
     const isDuplicate = tasks.some((task) => task.title === title);
@@ -57,28 +58,33 @@ export default function App() {
   };
 
   const removeTask = (taskIdToRemove) => {
-    // Filter out the task with the provided taskIdToRemove
     const updatedTasks = tasks.filter((task) => task.id !== taskIdToRemove);
-    // Update the state with the updated tasks
     setTasks(updatedTasks);
   };
 
   const handleSliderChange = (taskTitle, newValue) => {
-    // console.log(")))))))))))))))", taskTitle, newValue);
     setIsLoading(true);
+    // const newTime = DateTime.fromFormat(newValue.toString(), "HH:mm");
+
+    // const updatedTasks = tasks.map((task) => {
+    //   if (task.title === taskTitle) {
+    //     return { ...task, time: newTime.toFormat("HH:mm") };
+    //   }
+
+    //   const updatedTime = newTime.setZone('UTC');
+
+    //   return { ...task, time: updatedTime.toFormat("HH:mm") };
+    // });
+    // setTasks(updatedTasks);
     const newTime = DateTime.fromFormat(newValue.toString(), "HH:mm");
 
     const updatedTasks = tasks.map((task) => {
-      if (task.title === taskTitle) {
-        return { ...task, time: newTime.toFormat("HH:mm") };
-      }
-
+      // Convert time from UTC to the timezone of the current task
       const updatedTime = newTime.setZone(task.title);
-      // console.log("TITLE", task.title);
 
       return { ...task, time: updatedTime.toFormat("HH:mm") };
     });
-    // console.log("UPDATED TASK ------------ ", updatedTasks);
+    console.log(updatedTasks);
     setTasks(updatedTasks);
     setIsLoading(false);
   };
@@ -107,7 +113,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <h1>Time Zones ✅</h1>
+      <h1>Time Zones </h1>
       <Input onSubmit={addTask} />
       {!isLoading && (
         <DndContext

@@ -5,11 +5,20 @@ import "./Input.css";
 export const Input = ({ onSubmit }) => {
   const [selectedTimezone, setSelectedTimezone] = useState("");
   const [timezoneOptions, setTimezoneOptions] = useState([
-    "UTC",
-    "IST",
-    "America/New_York",
-    "Europe/London",
-    "Asia/Tokyo",
+    "UTC", // Coordinated Universal Time
+    "PST", // Pacific Standard Time
+    "EST", // Eastern Standard Time
+    "CST", // Central Standard Time
+    "MST", // Mountain Standard Time
+    "GMT", // Greenwich Mean Time
+    "BST", // British Summer Time
+    "CET", // Central European Time
+    "EET", // Eastern European Time
+    "JST", // Japan Standard Time
+    "AEST", // Australian Eastern Standard Time
+    "NZST", // New Zealand Standard Time
+    "HST", // Hawaii-Aleutian Standard Time
+    "AKST", // Alaska Standard Time
   ]);
 
   // Function to handle form submission

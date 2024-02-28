@@ -6,13 +6,30 @@ import { Slider } from "./../Slider/Slider";
 import "./Task.css";
 
 export const Task = ({ id, title, time, onRemove, onSliderChange }) => {
-  // Initialize the slider value state with the time prop value
+
+  const timezoneMap = {
+    IST: "Indian Standard Time",
+    UTC: "Coordinated Universal Time",
+    PST: "Pacific Standard Time",
+    EST: "Eastern Standard Time",
+    CST: "Central Standard Time",
+    MST: "Mountain Standard Time",
+    GMT: "Greenwich Mean Time",
+    BST: "British Summer Time",
+    CET: "Central European Time",
+    EET: "Eastern European Time",
+    JST: "Japan Standard Time",
+    AEST: "Australian Eastern Standard Time",
+    NZST: "New Zealand Standard Time",
+    HST: "Hawaii-Aleutian Standard Time",
+    AKST: "Alaska Standard Time",
+  };
   const [sliderValue, setSliderValue] = useState(time);
 
   // Function to handle slider changes
   const handleSliderChange = (newValue) => {
-    setSliderValue(newValue); // Update the slider value in the local state
-    onSliderChange(newValue); // Call the callback function with the new slider value
+    setSliderValue(newValue);
+    onSliderChange(newValue);
   };
 
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -28,14 +45,8 @@ export const Task = ({ id, title, time, onRemove, onSliderChange }) => {
   };
 
   useEffect(() => {
-    // console.log("TITLE --> ", title, " ", time);
     setSliderValue(time);
   }, [time]);
-
-  const changeValue = (value) => {
-    const temp = value.split(":");
-    return parseFloat(temp[0] + "." + temp[1]);
-  };
 
   return (
     <>
@@ -46,6 +57,7 @@ export const Task = ({ id, title, time, onRemove, onSliderChange }) => {
             X{" "}
           </div>
           {title}
+          <div className="timezone"> {timezoneMap[title]} </div>
           <div className="time"> {sliderValue} </div>
           <div className="drag-area" {...listeners}>
             {" "}
@@ -53,8 +65,8 @@ export const Task = ({ id, title, time, onRemove, onSliderChange }) => {
           </div>
         </div>
         <Slider
-          title={title}
-          time={() => changeValue(sliderValue)}
+          id={id}
+          time={sliderValue}
           onChange={(newValue) => handleSliderChange(newValue)}
         />
       </div>
